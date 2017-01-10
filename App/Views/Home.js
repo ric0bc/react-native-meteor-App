@@ -16,6 +16,14 @@ import Header from './Partials/Header';
 const SERVER_URL = 'ws://localhost:3000/websocket';
 
 class Home extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      lng: '',
+      lat: '',
+      location: '',
+    }
+  }
 
   componentWillMount(){
     Meteor.connect(SERVER_URL);
@@ -24,11 +32,23 @@ class Home extends Component {
     // Geolocation data
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        console.log(JSON.stringify(position));
+        this.setState({lng: JSON.stringify(position.coords.longitude)});
+        this.setState({lat: JSON.stringify(position.coords.latitude)});
+        let url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.lat + ',' + this.state.lng;
+        //Fetch City Location
+        fetch(url)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            this.setState({location: responseJson.results[2].formatted_address});
+            console.log(this.state.location);
+          })
+          .catch((error) => {
+            console.error(error);
+        });
       },
       (error) => {alert(error.message)},
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
+    ); 
   }
 
   // Button to change scene to CREATE page
@@ -39,6 +59,7 @@ class Home extends Component {
     });
   }
 
+  //Goto DetailView
   handlePost(item){
     this.props.navigator.push({
       title: 'Details',
