@@ -11,6 +11,7 @@ import Meteor, { createContainer, MeteorListView } from 'react-native-meteor';
 
 import Add from './Add';
 import DetailView from './DetailView';
+import Header from './Partials/Header';
 
 const SERVER_URL = 'ws://localhost:3000/websocket';
 
@@ -72,7 +73,7 @@ class Home extends Component {
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.text}>Home App, first view !</Text>
+          <Header />
           <MeteorListView
             style={styles.listView}
             collection='items'
@@ -93,11 +94,7 @@ class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 60,
     justifyContent: 'center',
-  },
-  text: {
-    fontSize: 24,
   },
   button: {
     height: 60,
@@ -110,7 +107,7 @@ const styles = StyleSheet.create({
     bottom: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF4081'
+    backgroundColor: '#FF4081',
   },
   buttonText: {
     color: 'white',
