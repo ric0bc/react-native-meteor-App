@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableHighlight,
+  Image
 } from 'react-native';
 
 import Meteor from 'react-native-meteor';
@@ -25,21 +26,43 @@ export default class Add extends Component {
     this.props.navigator.pop();
   }
 
+  goBack(){
+    this.props.navigator.pop();
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Add Item View</Text>
-        <TextInput
-          style={styles.textInput}
-          onChange={(text) => { this.setState({ name: text.nativeEvent.text })}}
-          value={this.state.name}
-        />
-        <TouchableHighlight
-          style={styles.button}
-          onPress={this.addItem.bind(this)}
-        >
-          <Text>SAVE</Text>
-        </TouchableHighlight>
+        <View style={styles.header}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TouchableHighlight
+              onPress={this.goBack.bind(this)}
+            >
+              <Image
+                source={require('../Images/left-arrow.png')}
+                style={{ height: 35, width: 35, marginLeft: 15}}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={this.addItem.bind(this)}
+            >
+              <Image
+                source={require('../Images/send-button.png')}
+                style={{ height: 35, width: 35, marginRight: 15}}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
+        <View style={styles.inputBackground}>
+          <TextInput
+            style={styles.textInput}
+            multiline={true}
+            numberOfLines={10}
+            maxLength={256}
+            onChange={(text) => { this.setState({ name: text.nativeEvent.text })}}
+            value={this.state.name}
+          />
+        </View>
       </View>
     );
   }
@@ -48,20 +71,23 @@ export default class Add extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignSelf: 'center',
   },
-  text: {
-    fontSize: 24,
+  header: {
+    minHeight: 60,
+    backgroundColor: '#2196F3',
+    justifyContent: 'center'
   },
-  button: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'red'
+  inputBackground: {
+    backgroundColor: '#E57373',
+    margin: 10,
+    flex: 2,
+    padding: 10
   },
   textInput: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'red'
+    marginLeft: 10,
+    marginRight: 10,
+    height: 100,
+    borderBottomWidth: 1,
+    borderColor: 'grey'
   }
 });
